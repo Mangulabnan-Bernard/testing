@@ -20,23 +20,23 @@ class AboutPage extends StatelessWidget {
                 children: const [
                   CupertinoListTile(
                     leading: Icon(CupertinoIcons.person),
-                    title: Text('Maricar Mangulabnan'),
+                    title: Text('Mervin Magat'),
                   ),
                   CupertinoListTile(
                     leading: Icon(CupertinoIcons.person),
-                    title: Text('Aero Kenn Dela Pena'),
+                    title: Text('Bernard Mangulabnan'),
                   ),
                   CupertinoListTile(
                     leading: Icon(CupertinoIcons.person),
-                    title: Text('Jhoncarlo Mariano'),
+                    title: Text('Renz Samson'),
                   ),
                   CupertinoListTile(
                     leading: Icon(CupertinoIcons.person),
-                    title: Text('Riane Gamboa'),
+                    title: Text('Paul Vismonte'),
                   ),
                   CupertinoListTile(
                     leading: Icon(CupertinoIcons.person),
-                    title: Text('Janzen Decano'),
+                    title: Text('Steven Lising'),
                   ),
                 ],
               ),

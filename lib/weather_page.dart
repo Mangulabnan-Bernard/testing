@@ -23,7 +23,7 @@ class _WeatherPageState extends State<WeatherPage> {
   Future<void> getWeatherData() async {
     try {
       final unit = isMetric ? 'metric' : 'imperial';
-      final link = "https://api.openweathermap.org/data/2.5/weather?q=$location&units=$unit&appid=b565a0e5c08b8b96b4a12f1b993b26bd";
+      final link = "https://api.openweathermap.org/data/2.5/weather?q=$location&units=$unit&appid=8a5d356fbd1d1e14b2fc12eebc4946a1";
       final response = await http.get(Uri.parse(link));
       weatherData = jsonDecode(response.body);
 

@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
-import 'package:weather/settings_list/abouts.dart';
+import 'package:weatherapps/settings_list/abouts.dart';
 
 class SettingsPage extends StatefulWidget {
   final String initialLocation;
