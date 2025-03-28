@@ -23,30 +23,9 @@ workflows:
         script: |
           echo "$CM_BASE64" | base64 --decode > android/app/weatherapp.keystore
 
-      # Build AAB in release mode
+      # Build AAB in release mode (ensure release flag is set)
       - name: Build AAB
         script: flutter build appbundle --release
 
     artifacts:
       - "build/app/outputs/bundle/release/app-release.aab"
-
-  ios-release:
-    name: iOS Release
-    instance_type: mac_mini_m2
-    environment:
-      flutter: stable
-    scripts:
-      # Set up Flutter SDK
-      - name: Set up Flutter
-        script: flutter --version
-
-      # Get dependencies
-      - name: Get dependencies
-        script: flutter pub get
-
-      # Build iOS app for release
-      - name: Build iOS
-        script: flutter build ios --release --no-codesign
-
-    artifacts:
-      - "build/ios/iphoneos/Runner.app.zip"
