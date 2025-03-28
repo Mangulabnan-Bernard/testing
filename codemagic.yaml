@@ -1,0 +1,106 @@
+  import java.util.Properties
+    import java.io.FileInputStream
+    
+    plugins {
+    id("com.android.application")
+    id("kotlin-android")
+    id("dev.flutter.flutter-gradle-plugin")
+  }
+    
+    android {
+    namespace = "com.developer.weatherapps"
+    compileSdk = flutter.compileSdkVersion
+    ndkVersion = flutter.ndkVersion
+
+    compileOptions {
+    sourceCompatibility = JavaVersion.VERSION_11
+    targetCompatibility = JavaVersion.VERSION_11
+    }
+
+    kotlinOptions {
+    jvmTarget = JavaVersion.VERSION_11.toString()
+    }
+
+    defaultConfig {
+    applicationId = "com.developer.weatherapps"
+    minSdk = flutter.minSdkVersion
+    targetSdk = flutter.targetSdkVersion
+    versionCode = flutter.versionCode
+    versionName = flutter.versionName
+    }
+
+    // Load keystore properties for signing
+    val keystorePropertiesFile = rootProject.file("key.properties")
+    val keystoreProperties = Properties()
+
+    if (keystorePropertiesFile.exists()) {
+    keystoreProperties.load(FileInputStream(keystorePropertiesFile))
+    } else {
+    throw GradleException("Key properties file not found.")
+    }
+
+    signingConfigs {
+    create("release") {
+  storeFile = file(keystoreProperties["storeFile"]?.toString() ?: throw GradleException("Keystore file not specified"))
+  storePassword = keystoreProperties["storePassword"]?.toString() ?: throw GradleException("Keystore password not specified")
+  keyAlias = keystoreProperties["keyAlias"]?.toString() ?: throw GradleException("Key alias not specified")
+  keyPassword = keystoreProperties["keyPassword"]?.toString() ?: throw GradleException("Key password not specified")
+  }
+  }
+
+    buildTypes {
+    release {
+    signingConfig = signingConfigs.getByName("release")
+    isMinifyEnabled = false
+    isShrinkResources = false
+  }
+  }
+  }
+
+    flutter {
+    source = "../.."
+  }
+
+
+
+
+  workflows:
+    android-release:
+      name: Android Release
+      instance_type: mac_mini_m1
+      environment:
+        flutter: stable
+      scripts:
+        # Step 1: Set up Flutter
+        - name: Set up Flutter
+          script: flutter --version
+
+        # Step 2: Get dependencies
+        - name: Get dependencies
+          script: flutter pub get
+
+        # Step 3: Decode key.properties from Base64
+        - name: Decode key.properties
+          script: |
+            echo "$CM_KEY_PROPERTIES" | base64 --decode > android/key.properties
+
+        # Step 4: Decode keystore from Base64
+        - name: Decode keystore
+          script: |
+            echo "$CM_BASE64" | base64 --decode > android/app/weatherapp.keystore
+
+        # Step 5: Build APK
+        - name: Build APK
+          script: flutter build apk --release
+
+        # Step 6: Build AAB
+        - name: Build AAB
+          script: flutter build appbundle --release
+
+      artifacts:
+        - "build/app/outputs/flutter-apk/app-release.apk"
+        - "build/app/outputs/bundle/release/app-release.aab"
+
+
+
+
